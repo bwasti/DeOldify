@@ -31,8 +31,6 @@ crit_name = proj_id + '_crit'
 name_gen = proj_id + '_image_gen'
 path_gen = path/name_gen
 
-TENSORBOARD_PATH = Path('data/tensorboard/' + proj_id)
-
 nf_factor = 2
 pct_start = 1e-8
 
@@ -74,18 +72,18 @@ def main():
 		if not path_lr.exists():
 				il = ImageList.from_folder(path_hr)
 				parallel(create_training_images, il.items)
-		bs=20
+		bs=10
 		sz=64
 		keep_pct=1.0
 
 		data_gen = get_data(bs=bs, sz=sz, keep_pct=keep_pct)
 		learn_gen = gen_learner_wide(data=data_gen, gen_loss=FeatureLoss(), nf_factor=nf_factor)
-		learn_gen.callback_fns.append(partial(ImageGenTensorboardWriter, base_dir=TENSORBOARD_PATH, name='GenPre'))
+		#learn_gen.callback_fns.append(partial(ImageGenTensorboardWriter, base_dir=TENSORBOARD_PATH, name='GenPre'))
 		learn_gen.fit_one_cycle(1, pct_start=0.8, max_lr=slice(1e-3))
-		learn_gen.save(pre_gen_name)
-		learn_gen.unfreeze()
-		learn_gen.fit_one_cycle(1, pct_start=pct_start,  max_lr=slice(3e-7, 3e-4))
-		learn_gen.save(pre_gen_name)
+		#learn_gen.save(pre_gen_name)
+		#learn_gen.unfreeze()
+		#learn_gen.fit_one_cycle(1, pct_start=pct_start,  max_lr=slice(3e-7, 3e-4))
+		#learn_gen.save(pre_gen_name)
 
 if __name__ == "__main__":
 		main()
