@@ -1,4 +1,6 @@
-fastai==1.0.51
+fastai==1.0.57
+torch==1.4.0
+torchvision==0.5.0
 wandb
 tensorboardX==1.6
 ffmpeg
